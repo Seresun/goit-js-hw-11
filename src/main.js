@@ -4,6 +4,7 @@ import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
+import './css/styles.css';
 
 let lightbox;
 
@@ -52,6 +53,7 @@ async function onLoadMore() {
   try {
     const data = await fetchImages(currentQuery, currentPage);
     renderImages(data.hits);
+    lightbox = new SimpleLightbox('.gallery a');
     lightbox.refresh();
   } catch (error) {
     iziToast.error({

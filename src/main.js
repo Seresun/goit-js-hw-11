@@ -10,12 +10,10 @@ let lightbox;
 
 const form = document.querySelector('#search-form');
 const gallery = document.querySelector('.gallery');
-const loadMoreBtn = document.querySelector('.load-more');
 let currentQuery = '';
 let currentPage = 1;
 
 form.addEventListener('submit', onSearch);
-loadMoreBtn.addEventListener('click', onLoadMore);
 
 async function onSearch(event) {
   event.preventDefault();
@@ -28,7 +26,6 @@ async function onSearch(event) {
 
   gallery.innerHTML = '';
   currentPage = 1;
-  loadMoreBtn.classList.add('is-hidden');
 
   try {
     const data = await fetchImages(currentQuery);
@@ -37,24 +34,7 @@ async function onSearch(event) {
     } else {
       renderImages(data.hits);
       lightbox = new SimpleLightbox('.gallery a');
-      loadMoreBtn.classList.remove('is-hidden');
     }
-  } catch (error) {
-    iziToast.error({
-      title: 'Error',
-      message: `Something went wrong: ${error.message}`,
-    });
-  }
-}
-
-async function onLoadMore() {
-  currentPage += 1;
-
-  try {
-    const data = await fetchImages(currentQuery, currentPage);
-    renderImages(data.hits);
-    lightbox = new SimpleLightbox('.gallery a');
-    lightbox.refresh();
   } catch (error) {
     iziToast.error({
       title: 'Error',

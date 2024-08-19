@@ -2,14 +2,13 @@ import { fetchImages } from './js/pixabay-api.js';
 import { renderImages } from './js/render-functions.js';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
-import iziToast from 'izitoast';
-import 'izitoast/dist/css/iziToast.min.css';
 import './css/styles.css';
 
 let lightbox = new SimpleLightbox('.gallery a');
 
 const form = document.querySelector('#search-form');
 const gallery = document.querySelector('.gallery');
+const loader = document.querySelector('.loader');
 let currentQuery = '';
 let currentPage = 1;
 
@@ -28,7 +27,7 @@ async function onSearch(event) {
   currentPage = 1;
 
   try {
-    iziToast.info({ title: 'Loading', message: 'Fetching images...' });
+    loader.style.display = 'block';
 
     const data = await fetchImages(currentQuery);
     if (data.hits.length === 0) {
@@ -43,6 +42,6 @@ async function onSearch(event) {
       message: `Something went wrong: ${error.message}`,
     });
   } finally {
-    iziToast.destroy();
+    loader.style.display = 'none';
   }
 }
